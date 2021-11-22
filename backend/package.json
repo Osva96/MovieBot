@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend of the Bot project",
+  "main": "index.js",
+  "scripts": {
+    "start": "./index.js"
+  },
+  "author": "Osvaldo Villalobos Perez",
+  "license": "ISC"
+}
