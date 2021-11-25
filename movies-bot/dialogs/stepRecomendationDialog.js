@@ -85,12 +85,14 @@ class StepRecomendationDialog extends ComponentDialog {
         }
         case 'action': {
             // console.log('Chose ACTION');
-            return await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreActionCard)] });
+            await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreActionCard)] });
+            return await stepContext.next();
             // break;
         }
         case 'thriller': {
             // console.log('Chose THRILLER');
-            return await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreThrillerCard)] });
+            await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreThrillerCard)] });
+            return await stepContext.next();
             // break;
         }
         default: {
