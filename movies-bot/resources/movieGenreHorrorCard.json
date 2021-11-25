@@ -1,0 +1,40 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Spooky horror movies that you may like",
+        "size": "large"
+      },
+      {
+        "type": "TextBlock",
+        "text": "Sorry some of them are repeats",
+        "size": "medium",
+        "weight": "lighter"
+      },
+      {
+        "type": "ImageSet",
+        "imageSize": "large",
+        "images": [
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/71jrtbwmpsL._AC_SY741_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/61vloUdRAcL._AC_SY679_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://http2.mlstatic.com/D_NQ_NP_871998-MLM46742884348_072021-W.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/71LkxE+sKmL._AC_SY606_.jpg"
+          }
+        ]
+      }
+    ]
+  }

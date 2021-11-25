@@ -1,12 +1,18 @@
-const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-expression');
-// const { MessageFactory, InputHints } = require('botbuilder');
-const { InputHints } = require('botbuilder');
-const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
+const { MessageFactory, InputHints } = require('botbuilder');
+const { CardFactory } = require('botbuilder-core');
+const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog, ConfirmPrompt } = require('botbuilder-dialogs');
+
+// * IMPORT CARDS
+const MovieGenreHorrorCard = require('../resources/movieGenreHorrorCard.json');
+const MovieGenreActionCard = require('../resources/movieGenreActionCard.json');
+const MovieGenreThrillerCard = require('../resources/movieGenreThrillerCard.json');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 
 const SELECTION_PROMPT = 'SELECTION_PROMPT';
 const GENRE_PROMPT = 'GENRE_PROMPT';
+const CONFIRM_PROMPT = 'confirmPrompt';
+const MAIL_PROMPT = 'mailPrompt';
 
 class StepRecomendationDialog extends ComponentDialog {
     constructor(id) {
@@ -19,10 +25,14 @@ class StepRecomendationDialog extends ComponentDialog {
         this.addDialog(new TextPrompt('TextPrompt'))
             .addDialog(new TextPrompt(SELECTION_PROMPT))
             .addDialog(new TextPrompt(GENRE_PROMPT))
+            .addDialog(new TextPrompt(MAIL_PROMPT))
+            .addDialog(new ConfirmPrompt(CONFIRM_PROMPT))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
                 this.firstStep.bind(this),
                 this.secondStep.bind(this),
-                this.lastStep.bind(this)
+                this.thirdStep.bind(this),
+                this.lastStep.bind(this),
+                this.finishStep.bind(this)
             ]));
 
         this.initialDialogId = MAIN_WATERFALL_DIALOG;
@@ -69,12 +79,19 @@ class StepRecomendationDialog extends ComponentDialog {
         stepContext.values.genre.toLowerCase();
         switch (stepContext.values.genre) {
         case 'horror': {
-            console.log('Chose HORROR');
-            break;
+            // console.log('Chose HORROR');
+            await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreHorrorCard)] });
+            return await stepContext.next();
         }
         case 'action': {
-            console.log('Chose ACTION');
-            break;
+            // console.log('Chose ACTION');
+            return await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreActionCard)] });
+            // break;
+        }
+        case 'thriller': {
+            // console.log('Chose THRILLER');
+            return await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreThrillerCard)] });
+            // break;
         }
         default: {
             stepContext.context.sendActivity('Sorry, I dont have options with the genre ' + stepContext.values.genre);
@@ -84,26 +101,31 @@ class StepRecomendationDialog extends ComponentDialog {
     }
 
     /**
-     * This is the final step in the main waterfall dialog.
+     * This is the third step in the main waterfall dialog.
      * It wraps up the sample "book a flight" interaction with a simple confirmation.
      */
+    async thirdStep(stepContext) {
+        const messageText = 'Do you want share your email to send you new recomendations dialy?';
+        const msg = MessageFactory.text(messageText, messageText, InputHints.ExpectingInput);
+        return await stepContext.prompt(CONFIRM_PROMPT, { prompt: msg });
+    }
+
     async lastStep(stepContext) {
-        // If the child dialog ("bookingDialog") was cancelled or the user failed to confirm, the Result here will be null.
-        if (stepContext.result) {
-            const result = stepContext.result;
-            // Now we have all the booking details.
-
-            // This is where calls to the booking AOU service or database would go.
-
-            // If the call to the booking service was successful tell the user.
-            const timeProperty = new TimexProperty(result.travelDate);
-            const travelDateMsg = timeProperty.toNaturalLanguage(new Date(Date.now()));
-            const msg = `I have you booked to ${ result.destination } from ${ result.origin } on ${ travelDateMsg }.`;
-            await stepContext.context.sendActivity(msg, msg, InputHints.IgnoringInput);
+        if (stepContext.result === true) {
+            return await stepContext.prompt(MAIL_PROMPT, {
+                prompt: 'Please, write your email.'
+            });
+            // const bookingDetails = stepContext.options;
+            // return await stepContext.endDialog(bookingDetails);
+        } else {
+            await stepContext.context.sendActivity('OK, maybe the next time.');
+            return await stepContext.endDialog();
         }
+    }
 
-        // Restart the main dialog with a different message the second time around
-        return await stepContext.replaceDialog(this.initialDialogId, { restartMsg: 'What else can I do for you?' });
+    async finishStep(stepContext) {
+        await stepContext.context.sendActivity('Thanks for providing your email.');
+        return await stepContext.endDialog();
     }
 }
 

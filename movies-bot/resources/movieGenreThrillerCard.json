@@ -1,0 +1,40 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Laught hard with these flicks!",
+        "size": "large"
+      },
+      {
+        "type": "TextBlock",
+        "text": "Sorry some of them are repeats",
+        "size": "medium",
+        "weight": "lighter"
+      },
+      {
+        "type": "ImageSet",
+        "imageSize": "medium",
+        "images": [
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/61n0tcEYikL._AC_SY741_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/91sustfojBL._AC_SL1500_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/51wMCWsTE0L._AC_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://cdn.shopify.com/s/files/1/0265/2769/4934/products/witch_xxlg_1024x1024@2x.jpg?v=1631395030"
+          }
+        ]
+      }
+    ]
+  }

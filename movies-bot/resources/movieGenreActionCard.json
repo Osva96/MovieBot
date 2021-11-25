@@ -1,0 +1,40 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Incredible action secuences to remember",
+        "size": "large"
+      },
+      {
+        "type": "TextBlock",
+        "text": "Sorry some of them are repeats",
+        "size": "medium",
+        "weight": "default"
+      },
+      {
+        "type": "ImageSet",
+        "imageSize": "large",
+        "images": [
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/91h9drksQsL._AC_SY741_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/7187-1QjBpL._AC_SY679_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/51kzFX8Zr8L._AC_.jpg"
+          },
+          {
+            "type": "Image",
+            "url": "https://m.media-amazon.com/images/I/71RYyuL4W6L._AC_SY879_.jpg"
+          }
+        ]
+      }
+    ]
+  }
