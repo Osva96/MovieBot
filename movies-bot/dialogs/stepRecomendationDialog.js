@@ -60,8 +60,6 @@ class StepRecomendationDialog extends ComponentDialog {
      * le gustaría realizar presentando las opciones que puede elegir
      */
     async firstStep(stepContext) {
-        // console.log('jalo');
-        // stepContext.context.sendActivity('SI PASO A STEPINFO');
         if (!stepContext.values.genre) {
             return await stepContext.prompt(GENRE_PROMPT, {
                 prompt: 'What genre is the movie you search?'
@@ -73,8 +71,6 @@ class StepRecomendationDialog extends ComponentDialog {
 
     async secondStep(stepContext) {
         stepContext.values.genre = stepContext.values.genre || stepContext.result;
-        // console.log(`Opción elegida: ${ stepContext.values.genre }`);
-        // return await stepContext.endDialog();
 
         stepContext.values.genre.toLowerCase();
         switch (stepContext.values.genre) {
@@ -84,16 +80,12 @@ class StepRecomendationDialog extends ComponentDialog {
             return await stepContext.next();
         }
         case 'action': {
-            // console.log('Chose ACTION');
             await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreActionCard)] });
             return await stepContext.next();
-            // break;
         }
         case 'thriller': {
-            // console.log('Chose THRILLER');
             await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieGenreThrillerCard)] });
             return await stepContext.next();
-            // break;
         }
         default: {
             stepContext.context.sendActivity('Sorry, I dont have options with the genre ' + stepContext.values.genre);
@@ -117,8 +109,6 @@ class StepRecomendationDialog extends ComponentDialog {
             return await stepContext.prompt(MAIL_PROMPT, {
                 prompt: 'Please, write your email.'
             });
-            // const bookingDetails = stepContext.options;
-            // return await stepContext.endDialog(bookingDetails);
         } else {
             await stepContext.context.sendActivity('OK, maybe the next time.');
             return await stepContext.endDialog();

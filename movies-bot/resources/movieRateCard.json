@@ -1,0 +1,24 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "The Thing (1982)",
+        "size": "large",
+        "weight": "bolder"
+      },
+      {
+        "type": "Image",
+        "url": "https://m.media-amazon.com/images/I/61NY0RioBXL._AC_SY679_.jpg",
+        "size": "stretch"
+      },
+      {
+        "type": "TextBlock",
+        "text": "How you rate this movie? (1 to 10)",
+        "size": "medium",
+        "weight": "default"
+      }
+    ]
+  }

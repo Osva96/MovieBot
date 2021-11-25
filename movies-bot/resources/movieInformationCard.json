@@ -1,0 +1,42 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "spacing": "medium",
+        "size": "large",
+        "weight": "bolder",
+        "text": "Here are some information about the movie",
+        "wrap": true,
+        "maxLines": 0
+      },
+      {
+        "type": "TextBlock",
+        "size": "default",
+        "isSubtle": true,
+        "text": "Select between the buttons a page you want",
+        "wrap": true,
+        "maxLines": 0
+      }
+    ],
+    "actions": [
+      {
+        "type": "Action.OpenUrl",
+        "title": "Google",
+        "url": "https://docs.microsoft.com/en-us/azure/bot-service/?view=azure-bot-service-4.0"
+      },
+      {
+        "type": "Action.OpenUrl",
+        "title": "The Movie Data Base (TMDB)",
+        "url": "https://stackoverflow.com/questions/tagged/botframework"
+      },
+      {
+        "type": "Action.OpenUrl",
+        "title": "Internet Movie Database",
+        "url": "https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-deploy-azure?view=azure-bot-service-4.0"
+      }
+    ]
+  }
+  

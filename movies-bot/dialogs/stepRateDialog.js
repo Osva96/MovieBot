@@ -1,11 +1,14 @@
-const { TimexProperty } = require('@microsoft/recognizers-text-data-types-timex-expression');
 // const { MessageFactory, InputHints } = require('botbuilder');
-const { InputHints } = require('botbuilder');
+// const { InputHints } = require('botbuilder');
 const { ComponentDialog, DialogSet, DialogTurnStatus, TextPrompt, WaterfallDialog } = require('botbuilder-dialogs');
+const { CardFactory } = require('botbuilder-core');
+
+const MovieRateCard = require('../resources/movieRateCard.json');
 
 const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 
 const SELECTION_PROMPT = 'SELECTION_PROMPT';
+const RATE_PROMPT = 'RATE_PROMPT';
 
 class StepRateDialog extends ComponentDialog {
     constructor(id) {
@@ -17,8 +20,10 @@ class StepRateDialog extends ComponentDialog {
         // This is a sample "book a flight" dialog.
         this.addDialog(new TextPrompt('TextPrompt'))
             .addDialog(new TextPrompt(SELECTION_PROMPT))
+            .addDialog(new TextPrompt(RATE_PROMPT))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
                 this.firstStep.bind(this),
+                this.secondStep.bind(this),
                 this.lastStep.bind(this)
             ]));
 
@@ -47,42 +52,32 @@ class StepRateDialog extends ComponentDialog {
      * le gustaría realizar presentando las opciones que puede elegir
      */
     async firstStep(stepContext) {
-        // console.log('jalo');
-        stepContext.context.sendActivity('SI PASO A STEPINFO');
+        await stepContext.context.sendActivity({ attachments: [CardFactory.adaptiveCard(MovieRateCard)] });
 
-        /* if (!stepContext.values.selected) {
-            return await stepContext.prompt(SELECTION_PROMPT, {
-                prompt: 'A continuación indica el número o palabra de las opciones que puedes realizar\n\n' +
-                '1.- Recomendar película\n\n' +
-                '2.- Calificar película\n\n' +
-                '3.- Información sobre película'
-            });
-        } else {
-            return await stepContext.next(stepContext.values.selected);
-        } */
+        return await stepContext.next();
     }
 
     /**
      * This is the final step in the main waterfall dialog.
      * It wraps up the sample "book a flight" interaction with a simple confirmation.
      */
-    async lastStep(stepContext) {
-        // If the child dialog ("bookingDialog") was cancelled or the user failed to confirm, the Result here will be null.
-        if (stepContext.result) {
-            const result = stepContext.result;
-            // Now we have all the booking details.
-
-            // This is where calls to the booking AOU service or database would go.
-
-            // If the call to the booking service was successful tell the user.
-            const timeProperty = new TimexProperty(result.travelDate);
-            const travelDateMsg = timeProperty.toNaturalLanguage(new Date(Date.now()));
-            const msg = `I have you booked to ${ result.destination } from ${ result.origin } on ${ travelDateMsg }.`;
-            await stepContext.context.sendActivity(msg, msg, InputHints.IgnoringInput);
+    async secondStep(stepContext) {
+        if (!stepContext.values.rate) {
+            return await stepContext.prompt(RATE_PROMPT, {
+                prompt: 'Your qualification is...'
+            });
+            // return await stepContext.sendActivity('Your qualification is...', 'Your qualification is...', InputHints.ExpectingInput);
+            // return stepContext.next();
+        } else {
+            return stepContext.next();
         }
 
-        // Restart the main dialog with a different message the second time around
-        return await stepContext.replaceDialog(this.initialDialogId, { restartMsg: 'What else can I do for you?' });
+        // return await stepContext.next();
+        // return await stepContext.replaceDialog(this.initialDialogId, { restartMsg: 'What else can I do for you?' });
+    }
+
+    async lastStep(stepContext) {
+        return await stepContext.endDialog();
     }
 }
 
