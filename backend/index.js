@@ -1,16 +1,36 @@
+// Import of express library.
 const express = require('express');
-const app = express();
-const { PORT } = require('./config/config');
-// const port = 4200;
+// Import of cors library.
+const cors = require('cors');
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+// Variable with express solution.
+const app = express();
+
+// Specific route of API
+const routes = require('./routes/');
+
+const { PORT, API_VERSION } = require('./config/config');
+
+// Parse request of content type application/json
+app.use(express.json());
+
+// Parse request of content type application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+const API_URL = `/api/v${API_VERSION}`;
+
+const whitelist = ['localhost:3978'];
+
+app.use(cors({ origin: whitelist }));
+
+app.use(API_URL, routes);
+
+// Home simple rute
+app.get("/", (req, res) => {
+    res.json({ message: "Hello World!" });
 });
 
-/* app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-}); */
-
+// Set port and listen requests
 app.listen(parseInt(PORT, 10), '::', () => {
-    console.log(`Server running at ${PORT}`);
+    console.log(`Server is running in port ${ PORT }.`);
 });
